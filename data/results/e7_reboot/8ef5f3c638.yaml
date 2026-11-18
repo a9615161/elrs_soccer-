@@ -1,0 +1,25 @@
+name: e7_reboot
+seeds: 200
+duration_s: 30
+protocols:
+- stock
+- expctr
+- proposed
+fixed:
+  window: 8
+  drift_ppm: 50
+sweep:
+  rate:
+  - F1000Hz
+  - F500Hz
+  - 500Hz
+  - 333HzFull
+  - 250Hz
+  - 150Hz
+  - 100HzFull
+  - 50Hz
+  reboot:
+    start_s:
+    - 5
+    dur_s:
+    - 0.5

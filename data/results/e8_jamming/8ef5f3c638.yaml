@@ -1,0 +1,46 @@
+name: e8_jamming
+seeds: 20
+duration_s: 30
+protocols:
+- stock
+- expctr
+- proposed
+fixed:
+  window: 8
+sweep:
+  rate:
+  - F1000Hz
+  - F500Hz
+  - 500Hz
+  - 333HzFull
+  - 250Hz
+  - 150Hz
+  - 100HzFull
+  - 50Hz
+  jammer:
+    type:
+    - constant
+    - sweep
+    - duty_cycle
+    - reactive
+    - selective
+    duty:
+    - 0.0
+    - 0.1
+    - 0.3
+    - 0.5
+    - 0.7
+    - 0.9
+    coverage:
+    - 0.25
+    - 0.5
+    - 1.0
+    cycle_s:
+    - 10
+skip:
+- jammer.duty: 0.0
+  jammer.type:
+  - constant
+  - sweep
+  - duty_cycle
+  - reactive
