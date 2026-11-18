@@ -26,6 +26,7 @@ from sim.baselines import elrs_stock
 from sim.channel import gilbert_elliott, iid_loss, jammer_fn
 
 STOCK, EXPCTR, PROPOSED = "stock", "expctr", "proposed"
+STOCKSYNC = "stocksync"  # N3 baseline: stock with SyncPktIntervalConnected = Disconnected
 
 
 @dataclass
@@ -58,6 +59,10 @@ class Scenario:
     worst_case_tries: bool = False        # E10: every packet in SUSPECT/LOST costs W MACs
     record: bool = False                  # E5: keep per-slot trace
     min_gap_slots: int = 2                # control gaps shorter than this are not events
+    # Revised-plan resync (N3/N4): single fixed critical channel, per-frame TX sync, COAST.
+    crit_channel: int | None = None       # None = old rendezvous mechanism; int = new mechanism
+    n_sync: int = 1                       # TX sync slots per 256-slot frame (n_s = 1/2/4)
+    tx_reboot: dict | None = None         # {start_s, dur_s}: TX powered off (RX coasts)
 
 
 @dataclass
@@ -77,7 +82,7 @@ def schedule_channels(sc: Scenario, r: dict, rng, n_slots: int):
             sk = rng.integers(0, 256, size=16, dtype=np.uint8).tobytes()
             extra = {"proto": proto_ffi.Proto(sk, b"field-sim"), "hop_prf": 3.0}
         return sc.tx_channels[:n_slots], extra
-    if sc.protocol in (STOCK, EXPCTR):
+    if sc.protocol in (STOCK, EXPCTR, STOCKSYNC):
         uid = rng.integers(0, 256, size=6, dtype=np.uint8).tobytes()
         seq = elrs_stock.build_sequence(elrs_stock.uid_seed(uid), n_ch)
         # The TX resets FHSS index and nonce together (tx_main.cpp L494-495), so telemetry slots
@@ -89,7 +94,10 @@ def schedule_channels(sc: Scenario, r: dict, rng, n_slots: int):
     p = proto_ffi.Proto(sk, b"field-sim")
     h0 = int(rng.integers(0, 2**40))
     proto_ffi.op_counts_reset()
-    hops = p.hop_gap_block(h0, h_cnt, n_ch, sc.n_drones, sc.gap)[sc.drone_id]
+    n_hop = n_ch - 1 if sc.crit_channel is not None else n_ch  # new mechanism: exclude critical ch
+    hops = p.hop_gap_block(h0, h_cnt, n_hop, sc.n_drones, sc.gap)[sc.drone_id]
+    if sc.crit_channel is not None:
+        hops = hops + (hops >= sc.crit_channel).astype(hops.dtype)  # map 0..78 onto non-critical chs
     hop_prf = proto_ffi.op_counts()["prf"] / h_cnt  # PRF calls per hop, measured
     return hops[np.arange(n_slots) // r["hop_interval"]], {"proto": p, "hop_prf": hop_prf}
 
@@ -127,8 +135,10 @@ def run(sc: Scenario) -> Result:
     nonce0 = extra.get("nonce0", sc.nonce0)  # slots since the TX reset its nonce
     tlm = ((np.arange(n) + nonce0 + 1) % r["tlm_ratio"]) == 0
     reboot = _window_slots(sc.reboot, period, n)
-    if sc.protocol in (STOCK, EXPCTR):
+    if sc.protocol in (STOCK, EXPCTR, STOCKSYNC):
         out = _run_stock(sc, r, n, ch, ok, tlm, reboot, nonce0)
+    elif sc.crit_channel is not None:
+        out = _run_proposed_critical(sc, r, n, ch, ok, tlm, extra, rng, lost_any, jam, reboot)
     else:
         out = _run_proposed(sc, r, n, ch, ok, tlm, extra, rng, lost_any, jam, reboot)
     end = (blackout or reboot or (None, None))[1]
@@ -207,7 +217,8 @@ def _run_stock(sc, r, n, ch, ok, tlm, reboot, nonce0):
                 last_tlm = t
         else:
             tx_conn = (t - last_tlm) <= tx_lost_slots
-            interval = sync_conn if tx_conn else sync_disc
+            # stocksync (N3 baseline): TX sends sync every sync-channel pass even when connected
+            interval = sync_disc if sc.protocol == STOCKSYNC else (sync_conn if tx_conn else sync_disc)
             if ch[t] == sync_ch and (sync_slot // 2) <= ((t + nonce0) % H) and (t - tx_last_sync) > interval:
                 is_sync[t] = True
                 tx_last_sync = t
@@ -353,6 +364,105 @@ def _run_proposed(sc, r, n, ch, ok, tlm, extra, rng, lost_any, jam, reboot):
     return delivered, sent, failsafe, {"rx_state": rx_state, "deadline_miss": deadline_miss,
                                        "mac_ops": mac_ops, "is_beacon": is_beacon,
                                        "beacons_ok": beacons_ok}
+
+
+def _run_proposed_critical(sc, r, n, ch, ok, tlm, extra, rng, lost_any, jam, reboot):
+    """Revised-plan resync: single fixed critical channel, per-frame TX sync, COAST state.
+
+    The RX follows the hop table on its own clock (COAST) while packets are missing and only
+    falls back to the critical channel (LOST) when its worst-case clock uncertainty exceeds half
+    the slot guard, or it rebooted. There it waits for its own TX's sync (every frame at slot r_i,
+    n_s times per 256-slot frame) to re-phase, then the first data packet that passes the MAC
+    re-locks. TX never changes its schedule for telemetry; the GS/TX sync carries the slot counter
+    (modelled with the libproto beacon codec: authentic + monotonic, so replays can't lock it)."""
+    proto = extra["proto"]
+    P = r["period_us"]
+    H, toa, tock = r["hop_interval"], r["airtime_us"], r["tock_slack_us"]
+    period_ms = P / 1000.0
+    crit = int(sc.crit_channel)
+    FRAME, n_s = 256, max(1, int(sc.n_sync))
+    r_i = (13 + 24 * sc.drone_id) % FRAME                       # this TX's sync slot in the frame
+    sync_set = {(r_i + j * (FRAME // n_s)) % FRAME for j in range(n_s)}
+    link_tx = proto_ffi.Link(proto.k_mac, sc.drone_id, sc.tag_bits)
+    link_rx = proto_ffi.Link(proto.k_mac, sc.drone_id, sc.tag_bits)
+    rs = proto_ffi.Resync(sc.suspect_after, int(round(r["disconnect_timeout_ms"] / period_ms)),
+                          sc.window, sc.window, 0)              # beacon-replay bookkeeping only
+    slack = P - toa - r["fixed_overhead_us"]
+    hop_prf = extra.get("hop_prf", 3.0)
+    payload = rng.integers(0, 256, size=(n, 8), dtype=np.uint8)
+    payload[:, 0] = (payload[:, 0] & 0xFC) | 1
+    delivered = np.zeros(n, bool)
+    is_beacon = np.zeros(n, bool)
+    rx_state = np.empty(n, np.int8)
+    parked_tr = np.zeros(n, bool)
+    deadline_miss = mac_ops = beacons_ok = 0
+    jitter = np.abs(rng.normal(0, r["isr_jitter_us"], n)) if sc.cost_c_us is not None else None
+    sign = 1 if np.random.default_rng([sc.seed, 3]).random() < 0.5 else -1
+    delta_us = sign * 2 * sc.drift_ppm * 1e-6 * P
+    err_us, last_lock, last_acc = 0.0, 0, proto_ffi.NO_SLOT
+    # COAST budget: slots the RX trusts its clock before the worst-case residual drift ε (park_ppm)
+    # pushes its slot-time uncertainty past half the guard — ~20 s at 10 ppm, ~4 s at 50 ppm.
+    guard = max(1.0, (P - toa) / 2.0)
+    coast_slots = guard / max(1e-9, sc.park_ppm * 1e-6 * P)
+    tx_reboot = _window_slots(sc.tx_reboot, P, n)
+    frame0 = int(np.random.default_rng([sc.seed, 5]).integers(FRAME))
+    parked = need_window = False
+    last_tlm = 0
+
+    for t in range(n):
+        rx_off = reboot is not None and reboot[0] <= t < reboot[1]
+        tx_off = tx_reboot is not None and tx_reboot[0] <= t < tx_reboot[1]
+        if reboot is not None and t == reboot[0]:
+            parked = True
+        if reboot is not None and t == reboot[1]:
+            parked, err_us, last_lock, need_window = True, 0.0, t, True  # booted: clock lost
+        err_us += delta_us
+        is_sync = ((t + frame0) % FRAME) in sync_set
+        if tlm[t]:
+            if not rx_off and not tx_off and not parked and ok[t]:
+                last_tlm = t
+            rx_state[t] = proto_ffi.LOST if parked else proto_ffi.LOCKED
+            parked_tr[t] = parked
+            continue
+        accepted = False
+        if is_sync:
+            is_beacon[t] = True                    # TX is on the critical channel, not sending RC
+            if not rx_off and not tx_off and parked and not lost_any[t] and not jam(t, crit):
+                slot = proto.beacon_open(rs, sc.drone_id, proto.beacon_seal(sc.drone_id, t))
+                mac_ops += 1
+                busy_ok = sc.cost_c_us is None or (2 * sc.cost_c_us + jitter[t]) <= slack
+                if slot is not None and busy_ok:
+                    beacons_ok += 1
+                    parked, err_us, last_lock, need_window = False, 0.0, t, True
+                elif not busy_ok:
+                    deadline_miss += 1
+        elif not rx_off and not tx_off and not parked and ok[t]:
+            k0 = int((t * P - toa - tock - err_us) // P) + 1
+            k1 = int((t * P - tock - err_us) // P) + 1
+            if k0 // H == t // H and k1 // H == t // H:
+                pkt = link_tx.seal(t, payload[t].tobytes())
+                w = sc.window if need_window else 1
+                good, off, tries = link_rx.open_window(k1, w, last_acc, pkt)
+                if sc.worst_case_tries and w > 1:
+                    tries = w
+                mac_ops += tries
+                if sc.cost_c_us is not None:
+                    busy = (tries + (hop_prf if t % H == 0 else 0.0)) * sc.cost_c_us + jitter[t]
+                    if busy > slack:
+                        deadline_miss += 1
+                        good = False
+                if good:
+                    accepted = True
+                    delivered[t] = True
+                    err_us, last_lock, last_acc, need_window = 0.0, t, k1 + off, False
+        if not accepted and not parked and (t - last_lock) > coast_slots:
+            parked = True                          # COAST budget exhausted: clock no longer trusted
+        rx_state[t] = proto_ffi.LOST if parked else proto_ffi.LOCKED
+        parked_tr[t] = parked
+    sent = ~tlm & ~is_beacon
+    return delivered, sent, parked_tr, {"rx_state": rx_state, "deadline_miss": deadline_miss,
+                                        "mac_ops": mac_ops, "is_beacon": is_beacon,
+                                        "beacons_ok": beacons_ok}
 
 
 def _runs(mask: np.ndarray):
