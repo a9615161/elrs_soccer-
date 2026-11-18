@@ -1,0 +1,18 @@
+name: e2_prediction
+seed: 20261029
+trials: 1000
+sync_attack_max_hops: 20
+observe_hops: 1000
+k_bins:
+- 1
+- 2
+- 5
+- 10
+- 20
+- 50
+- 100
+- 200
+- 500
+- 999
+n_drones: 10
+field_id: field-e2

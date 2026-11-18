@@ -1,0 +1,37 @@
+name: e7_blackout
+seeds: 200
+duration_s: 30
+protocols:
+- stock
+- expctr
+- proposed
+fixed:
+  window: 8
+sweep:
+  rate:
+  - F1000Hz
+  - F500Hz
+  - 500Hz
+  - 333HzFull
+  - 250Hz
+  - 150Hz
+  - 100HzFull
+  - 50Hz
+  drift_ppm:
+  - 0
+  - 50
+  blackout:
+    start_s:
+    - 5
+    dur_s:
+    - 0.05
+    - 0.1
+    - 0.25
+    - 0.5
+    - 1
+    - 2
+    - 2.4
+    - 2.6
+    - 3
+    - 5
+    - 10

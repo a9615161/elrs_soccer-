@@ -1,0 +1,10 @@
+name: e8_syncjam
+seeds: 200            # narrowband sync-channel jammer only; one 3 s outage forces a rejoin
+duration_s: 30
+protocols: [stock, expctr, proposed]
+fixed:
+  window: 8
+  jammer: {type: sync_only, duty: 0, coverage: 1.0}
+sweep:
+  rate: ["F1000Hz", "F500Hz", "500Hz", "333HzFull", "250Hz", "150Hz", "100HzFull", "50Hz"]
+  blackout: {start_s: [5], dur_s: [5]}

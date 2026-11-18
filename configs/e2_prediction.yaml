@@ -1,0 +1,8 @@
+name: e2_prediction
+seed: 20261029
+trials: 1000
+sync_attack_max_hops: 20     # observed hops after one captured SYNC packet
+observe_hops: 1000           # channel-only attackers observe up to 1000 hops
+k_bins: [1, 2, 5, 10, 20, 50, 100, 200, 500, 999]
+n_drones: 10                 # proposed field size (gap transform, g = 2)
+field_id: "field-e2"

@@ -1,0 +1,9 @@
+name: e6_drift
+seed: 20261031
+rates: ["F1000Hz", "F500Hz", "500Hz", "333HzFull", "250Hz", "150Hz", "100HzFull", "50Hz"]
+ppm: [10, 20, 50]                 # per crystal; TX and RX opposite -> 2*ppm relative
+# plan: L = 1..5000; extended to 3e5 slots to find where the window approach breaks down
+outage_slots: [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 50000, 70000, 100000, 150000, 200000, 300000]
+trials: 200
+jitter_us: 15                     # assumption (configs/elrs_baseline.yaml)
+search_slots: 400                 # look for a relock within this many slots after the outage

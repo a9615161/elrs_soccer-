@@ -1,0 +1,47 @@
+name: e10_cost
+seeds: 5
+duration_s: 20
+protocols:
+- proposed
+fixed:
+  worst_case_tries: true
+sweep:
+  rate:
+  - F1000Hz
+  - 500Hz
+  - 250Hz
+  - 150Hz
+  cost_c_us:
+  - 1.0
+  - 1.5
+  - 2.1
+  - 3.1
+  - 4.5
+  - 6.6
+  - 9.6
+  - 14.0
+  - 20.5
+  - 29.9
+  - 43.6
+  - 63.7
+  - 92.9
+  - 135.6
+  - 198.0
+  window:
+  - 1
+  - 8
+  - 16
+  - 32
+  - 64
+  ge:
+    burst:
+    - 200
+    err:
+    - 0.0
+    - 0.2
+skip:
+- ge.err: 0.0
+  window:
+  - 8
+  - 32
+  - 64

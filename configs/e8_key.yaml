@@ -1,0 +1,13 @@
+name: e8_key
+seeds: 200            # the combinations that matter from the e8_jamming coarse pass
+duration_s: 30
+protocols: [stock, expctr, proposed]
+fixed:
+  window: 8
+sweep:
+  rate: ["F1000Hz", "F500Hz", "500Hz", "333HzFull", "250Hz", "150Hz", "100HzFull", "50Hz"]
+  jammer:
+    - {type: selective, duty: 0.3, coverage: 1.0, cycle_s: 10}
+    - {type: selective, duty: 0.5, coverage: 1.0, cycle_s: 10}
+    - {type: constant, duty: 0.5, coverage: 1.0, cycle_s: 10}
+    - {type: constant, duty: 0.9, coverage: 1.0, cycle_s: 10}

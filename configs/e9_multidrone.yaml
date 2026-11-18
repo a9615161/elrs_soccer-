@@ -1,0 +1,18 @@
+name: e9_multidrone
+seed: 20261101
+rate: "500Hz"
+duration_s: 30
+trials: 10
+drones: [1, 2, 5, 10]
+schemes: [stock, random, proposed]
+leakage: [false, true]
+p_adj: 0.5            # ASSUMPTION: P(adjacent-channel overlap destroys a packet); to calibrate in HIL
+window: 8             # E6
+# slot-alignment sweep: Proposed only, each drone offset by U[0, frac * period]
+offset_rates: ["F1000Hz", "F500Hz", "500Hz", "333HzFull", "250Hz", "150Hz", "100HzFull", "50Hz"]
+offset_fracs: [0.0, 0.01, 0.02, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5, 0.75, 1.0]
+offset_drones: 10
+jammers:              # two representative jammers from E8
+  none: null
+  constant50: {type: constant, duty: 0.5, coverage: 0.5, cycle_s: 10}
+  selective30: {type: selective, duty: 0.3, coverage: 1.0, cycle_s: 10}

@@ -1,0 +1,30 @@
+name: e7_burst
+seeds: 50
+duration_s: 30
+protocols:
+- stock
+- expctr
+- proposed
+fixed:
+  window: 16
+sweep:
+  rate:
+  - 150Hz
+  - 250Hz
+  - 500Hz
+  ge:
+    burst:
+    - 1
+    - 5
+    - 20
+    - 50
+    - 200
+    - 1000
+    - 2000
+    err:
+    - 0.01
+    - 0.05
+    - 0.1
+    - 0.2
+    - 0.3
+    - 0.5

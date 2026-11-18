@@ -1,0 +1,11 @@
+name: e7_burst
+seeds: 50
+duration_s: 30
+protocols: [stock, expctr, proposed]
+fixed:
+  window: 8           # no clock drift here (E6: W <= 7 suffices); W cost is studied in E10
+sweep:
+  rate: ["F1000Hz", "F500Hz", "500Hz", "333HzFull", "250Hz", "150Hz", "100HzFull", "50Hz"]
+  # plan: burst 1/5/20/50/200 slots; 1000/2000 added because 200 slots (0.4 s at 500 Hz)
+  # is far below the 2.5-3.5 s DisconnectTimeout where the protocols diverge
+  ge: {burst: [1, 5, 20, 50, 200, 1000, 2000], err: [0.01, 0.05, 0.1, 0.2, 0.3, 0.5]}

@@ -1,0 +1,9 @@
+rate,slots_60s,expected_slots,hop_changes_only_on_boundary,sync_count_60s,sync_only_on_sync_channel,sync_min_spacing_ms,sync_interval_connected_ms,failsafe_clean,blackout_disconnect_after_ms,disconnect_timeout_ms,blackout_reconnect_delay_ms,first_sync_after_blackout_ms,min_lq_connect,tentative_to_connected_slots_min,tentative_to_connected_slots_median,reconnect_locked_ms_median,reconnect_unlocked_ms_median,reconnect_unlocked_never
+500Hz,30000,30000,True,12,True,5114.0,5000,0,2502.0,2500,22.0,12.0,4,4,4.0,377.0,377.0,0
+250Hz,15000,15000,True,12,True,5108.0,5000,0,3004.0,3000,844.0,824.0,4,4,4.0,670.0,670.0,0
+150Hz,9000,9000,True,10,True,6379.362,5000,0,3506.316,3500,1926.474,1893.144,4,4,4.0,1016.565,1016.565,0
+F1000Hz,60000,60000,True,12,True,5119.0,5000,0,2501.0,2500,45.0,42.0,2,2,2.0,98.5,98.5,0
+F500Hz,30000,30000,True,12,True,5118.0,5000,0,2502.0,2500,252.0,246.0,2,2,2.0,165.0,165.0,0
+333HzFull,19980,19980,True,11,True,5756.751,5000,0,2501.499,2500,456.456,441.441,4,4,4.0,432.432,432.432,0
+100HzFull,6000,6000,True,9,True,6370.0,5000,0,3510.0,3500,110.0,60.0,4,4,4.0,1865.0,1865.0,0
+50Hz,3000,3000,True,9,True,6380.0,5000,0,4020.0,4000,100.0,40.0,2,2,2.0,1660.0,1660.0,0

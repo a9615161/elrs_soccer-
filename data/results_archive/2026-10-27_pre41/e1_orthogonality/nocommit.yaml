@@ -1,0 +1,25 @@
+name: e1_orthogonality
+seed: 20261027
+trials: 30
+n_slots: 100000
+n_channels: 80
+drones:
+- 2
+- 3
+- 4
+- 5
+- 6
+- 7
+- 8
+- 9
+- 10
+schemes:
+- stock
+- random
+- prp_r4
+- prp_r8
+- gap2
+- gap3
+field_id: field-e1
+stock:
+  random_phase: true

@@ -1,0 +1,31 @@
+name: e9_multidrone
+seed: 20261101
+rate: 500Hz
+duration_s: 30
+trials: 10
+drones:
+- 1
+- 2
+- 5
+- 10
+schemes:
+- stock
+- random
+- proposed
+leakage:
+- false
+- true
+p_adj: 0.5
+window: 16
+jammers:
+  none: null
+  constant50:
+    type: constant
+    duty: 0.5
+    coverage: 0.5
+    cycle_s: 10
+  selective30:
+    type: selective
+    duty: 0.3
+    coverage: 1.0
+    cycle_s: 10

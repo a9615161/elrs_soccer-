@@ -1,0 +1,79 @@
+== e7blackout 18:23:59
+.venv/bin/cmake -S libproto -B build -G Ninja -DCMAKE_MAKE_PROGRAM=/data/richardlin/UAV/thesis-elrs-sim/.venv/bin/ninja
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /data/richardlin/UAV/thesis-elrs-sim/build
+.venv/bin/cmake --build build
+ninja: no work to do.
+.venv/bin/python scripts/run_experiment.py --config configs/e7_blackout.yaml 
+e7_blackout:   0%|          | 0/105600 [00:00<?, ?it/s]e7_blackout:   1%|          | 1061/105600 [00:05<08:18, 209.91it/s]e7_blackout:   2%|▏         | 2201/105600 [00:10<08:01, 214.88it/s]e7_blackout:   3%|▎         | 3417/105600 [00:15<07:29, 227.27it/s]e7_blackout:   4%|▍         | 4681/105600 [00:20<07:05, 237.10it/s]e7_blackout:   6%|▌         | 5897/105600 [00:25<07:00, 237.34it/s]e7_blackout:   7%|▋         | 7301/105600 [00:30<06:30, 251.94it/s]e7_blackout:   8%|▊         | 8562/105600 [00:35<06:33, 246.57it/s]e7_blackout:   9%|▉         | 9797/105600 [00:40<06:28, 246.39it/s]e7_blackout:  11%|█         | 11157/105600 [00:45<06:11, 254.02it/s]e7_blackout:  12%|█▏        | 12429/105600 [00:51<06:12, 250.00it/s]e7_blackout:  14%|█▎        | 14297/105600 [00:56<05:22, 283.01it/s]e7_blackout:  16%|█▌        | 16697/105600 [01:01<04:21, 339.97it/s]e7_blackout:  18%|█▊        | 19425/105600 [01:06<03:34, 400.95it/s]e7_blackout:  21%|██        | 21869/105600 [01:11<03:16, 427.07it/s]e7_blackout:  23%|██▎       | 24329/105600 [01:16<03:02, 446.34it/s]e7_blackout:  25%|██▌       | 26897/105600 [01:21<02:51, 459.23it/s]e7_blackout:  28%|██▊       | 29297/105600 [01:26<02:45, 460.09it/s]e7_blackout:  30%|███       | 31913/105600 [01:31<02:33, 478.67it/s]e7_blackout:  33%|███▎      | 34553/105600 [01:36<02:24, 493.20it/s]e7_blackout:  35%|███▌      | 37022/105600 [01:42<02:22, 480.77it/s]e7_blackout:  38%|███▊      | 39709/105600 [01:47<02:12, 497.29it/s]e7_blackout:  41%|████      | 43097/105600 [01:52<01:54, 547.69it/s]e7_blackout:  45%|████▍     | 47121/105600 [01:57<01:33, 623.18it/s]e7_blackout:  48%|████▊     | 50345/105600 [02:02<01:27, 629.58it/s]e7_blackout:  52%|█████▏    | 54469/105600 [02:07<01:14, 687.03it/s]e7_blackout:  56%|█████▌    | 59293/105600 [02:12<01:00, 769.75it/s]e7_blackout:  60%|██████    | 63561/105600 [02:17<00:52, 794.72it/s]e7_blackout:  66%|██████▌   | 69401/105600 [02:22<00:40, 902.26it/s]e7_blackout:  72%|███████▏  | 76000/105600 [02:28<00:29, 993.08it/s]e7_blackout:  79%|███████▉  | 83889/105600 [02:33<00:18, 1161.34it/s]e7_blackout:  85%|████████▌ | 90000/105600 [02:38<00:13, 1164.53it/s]e7_blackout:  95%|█████████▍| 100000/105600 [02:44<00:04, 1346.97it/s]e7_blackout: 100%|██████████| 105600/105600 [02:46<00:00, 634.21it/s] 
+wrote /data/richardlin/UAV/thesis-elrs-sim/data/results/e7_blackout/nocommit.parquet (105600 runs)
+== e7reboot 18:26:49
+.venv/bin/cmake -S libproto -B build -G Ninja -DCMAKE_MAKE_PROGRAM=/data/richardlin/UAV/thesis-elrs-sim/.venv/bin/ninja
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /data/richardlin/UAV/thesis-elrs-sim/build
+.venv/bin/cmake --build build
+ninja: no work to do.
+.venv/bin/python scripts/run_experiment.py --config configs/e7_reboot.yaml 
+e7_reboot:   0%|          | 0/4800 [00:00<?, ?it/s]e7_reboot:  34%|███▎      | 1617/4800 [00:05<00:09, 323.14it/s]e7_reboot: 100%|██████████| 4800/4800 [00:07<00:00, 619.80it/s]
+wrote /data/richardlin/UAV/thesis-elrs-sim/data/results/e7_reboot/nocommit.parquet (4800 runs)
+== e7 18:26:59
+.venv/bin/cmake -S libproto -B build -G Ninja -DCMAKE_MAKE_PROGRAM=/data/richardlin/UAV/thesis-elrs-sim/.venv/bin/ninja
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /data/richardlin/UAV/thesis-elrs-sim/build
+.venv/bin/cmake --build build
+ninja: no work to do.
+.venv/bin/python scripts/run_experiment.py --config configs/e7_burst.yaml 
+e7_burst:   0%|          | 0/50400 [00:00<?, ?it/s]e7_burst:   2%|▏         | 1013/50400 [00:05<04:03, 202.52it/s]e7_burst:   4%|▍         | 2173/50400 [00:10<03:40, 218.82it/s]e7_burst:   7%|▋         | 3437/50400 [00:15<03:20, 234.13it/s]e7_burst:   9%|▉         | 4749/50400 [00:20<03:06, 244.87it/s]e7_burst:  12%|█▏        | 6000/50400 [00:25<03:02, 243.63it/s]e7_burst:  16%|█▌        | 8185/50400 [00:30<02:17, 307.99it/s]e7_burst:  21%|██        | 10585/50400 [00:35<01:49, 363.60it/s]e7_burst:  26%|██▌       | 13157/50400 [00:40<01:30, 411.27it/s]e7_burst:  30%|███       | 15249/50400 [00:45<01:25, 413.06it/s]e7_burst:  35%|███▍      | 17513/50400 [00:50<01:17, 425.19it/s]e7_burst:  40%|███▉      | 20000/50400 [00:55<01:08, 443.88it/s]e7_burst:  46%|████▌     | 23293/50400 [01:00<00:53, 508.55it/s]e7_burst:  53%|█████▎    | 26781/50400 [01:05<00:41, 564.24it/s]e7_burst:  60%|█████▉    | 30000/50400 [01:10<00:35, 580.80it/s]e7_burst:  70%|██████▉   | 35193/50400 [01:15<00:21, 716.72it/s]e7_burst:  79%|███████▉  | 40000/50400 [01:21<00:13, 758.64it/s]e7_burst:  95%|█████████▌| 48000/50400 [01:27<00:02, 930.37it/s]e7_burst: 100%|██████████| 50400/50400 [01:29<00:00, 565.98it/s]
+wrote /data/richardlin/UAV/thesis-elrs-sim/data/results/e7_burst/nocommit.parquet (50400 runs)
+== e8 18:28:31
+.venv/bin/cmake -S libproto -B build -G Ninja -DCMAKE_MAKE_PROGRAM=/data/richardlin/UAV/thesis-elrs-sim/.venv/bin/ninja
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /data/richardlin/UAV/thesis-elrs-sim/build
+.venv/bin/cmake --build build
+ninja: no work to do.
+.venv/bin/python scripts/run_experiment.py --config configs/e8_jamming.yaml 
+e8_jamming:   0%|          | 0/37440 [00:00<?, ?it/s]e8_jamming:   3%|▎         | 1181/37440 [00:05<02:34, 234.86it/s]e8_jamming:   6%|▋         | 2356/37440 [00:10<02:30, 233.62it/s]e8_jamming:   9%|▉         | 3525/37440 [00:15<02:28, 229.01it/s]e8_jamming:  13%|█▎        | 4693/37440 [00:20<02:21, 230.76it/s]e8_jamming:  18%|█▊        | 6693/37440 [00:25<01:45, 291.20it/s]e8_jamming:  22%|██▏       | 8313/37440 [00:30<01:36, 302.22it/s]e8_jamming:  27%|██▋       | 10000/37440 [00:36<01:32, 297.45it/s]e8_jamming:  32%|███▏      | 12000/37440 [00:42<01:22, 306.53it/s]e8_jamming:  37%|███▋      | 14000/37440 [00:48<01:14, 312.59it/s]e8_jamming:  46%|████▌     | 17169/37440 [00:53<00:50, 401.82it/s]e8_jamming:  52%|█████▏    | 19525/37440 [00:58<00:42, 421.57it/s]e8_jamming:  59%|█████▉    | 22000/37440 [01:07<00:42, 359.82it/s]e8_jamming:  69%|██████▉   | 26000/37440 [01:14<00:27, 419.42it/s]e8_jamming:  80%|████████  | 30000/37440 [01:21<00:15, 466.14it/s]e8_jamming:  91%|█████████ | 34000/37440 [01:28<00:06, 512.17it/s]e8_jamming: 100%|██████████| 37440/37440 [01:31<00:00, 408.32it/s]
+wrote /data/richardlin/UAV/thesis-elrs-sim/data/results/e8_jamming/nocommit.parquet (37440 runs)
+== e8key 18:30:09
+.venv/bin/cmake -S libproto -B build -G Ninja -DCMAKE_MAKE_PROGRAM=/data/richardlin/UAV/thesis-elrs-sim/.venv/bin/ninja
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /data/richardlin/UAV/thesis-elrs-sim/build
+.venv/bin/cmake --build build
+ninja: no work to do.
+.venv/bin/python scripts/run_experiment.py --config configs/e8_key.yaml 
+e8_key:   0%|          | 0/19200 [00:00<?, ?it/s]e8_key:   9%|▉         | 1697/19200 [00:05<00:52, 335.38it/s]e8_key:  28%|██▊       | 5297/19200 [00:10<00:25, 551.70it/s]e8_key:  55%|█████▌    | 10589/19200 [00:15<00:11, 780.43it/s]e8_key: 100%|██████████| 19200/19200 [00:19<00:00, 995.10it/s]
+wrote /data/richardlin/UAV/thesis-elrs-sim/data/results/e8_key/nocommit.parquet (19200 runs)
+== e8syncjam 18:30:30
+.venv/bin/cmake -S libproto -B build -G Ninja -DCMAKE_MAKE_PROGRAM=/data/richardlin/UAV/thesis-elrs-sim/.venv/bin/ninja
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /data/richardlin/UAV/thesis-elrs-sim/build
+.venv/bin/cmake --build build
+ninja: no work to do.
+.venv/bin/python scripts/run_experiment.py --config configs/e8_syncjam.yaml 
+e8_syncjam:   0%|          | 0/4800 [00:00<?, ?it/s]e8_syncjam:  59%|█████▊    | 2813/4800 [00:05<00:03, 562.57it/s]e8_syncjam: 100%|██████████| 4800/4800 [00:05<00:00, 820.19it/s]
+wrote /data/richardlin/UAV/thesis-elrs-sim/data/results/e8_syncjam/nocommit.parquet (4800 runs)
+.venv/bin/cmake -S libproto -B build -G Ninja -DCMAKE_MAKE_PROGRAM=/data/richardlin/UAV/thesis-elrs-sim/.venv/bin/ninja
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /data/richardlin/UAV/thesis-elrs-sim/build
+.venv/bin/cmake --build build
+ninja: no work to do.
+.venv/bin/python analysis/e9_multidrone.py --config configs/e9_multidrone.yaml --workers 24
+  0%|          | 0/2460 [00:00<?, ?it/s] 19%|█▉        | 478/2460 [00:05<00:20, 95.44it/s] 19%|█▉        | 478/2460 [00:19<00:20, 95.44it/s] 34%|███▎      | 827/2460 [00:20<00:44, 36.93it/s] 38%|███▊      | 944/2460 [00:29<00:58, 26.07it/s] 38%|███▊      | 944/2460 [00:39<00:58, 26.07it/s] 47%|████▋     | 1165/2460 [00:40<00:52, 24.44it/s] 52%|█████▏    | 1277/2460 [00:45<00:49, 23.97it/s] 59%|█████▉    | 1454/2460 [00:51<00:40, 25.00it/s] 67%|██████▋   | 1638/2460 [00:56<00:29, 27.79it/s] 78%|███████▊  | 1910/2460 [01:01<00:15, 34.54it/s]100%|██████████| 2460/2460 [01:05<00:00, 37.29it/s]
+wrote /data/richardlin/UAV/thesis-elrs-sim/data/results/e9_multidrone
+.venv/bin/cmake -S libproto -B build -G Ninja -DCMAKE_MAKE_PROGRAM=/data/richardlin/UAV/thesis-elrs-sim/.venv/bin/ninja
+-- Configuring done (0.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /data/richardlin/UAV/thesis-elrs-sim/build
+.venv/bin/cmake --build build
+ninja: no work to do.
+.venv/bin/python scripts/run_experiment.py --config configs/e10_cost.yaml 
+e10_cost:   0%|          | 0/4200 [00:00<?, ?it/s]e10_cost:  28%|██▊       | 1169/4200 [00:05<00:12, 233.28it/s]e10_cost: 100%|██████████| 4200/4200 [00:08<00:00, 485.31it/s]
+wrote /data/richardlin/UAV/thesis-elrs-sim/data/results/e10_cost/nocommit.parquet (4200 runs)
+ALLDONE

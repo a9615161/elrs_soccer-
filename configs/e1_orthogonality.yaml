@@ -1,0 +1,12 @@
+name: e1_orthogonality
+seed: 20261027
+trials: 30            # independent keys / UIDs per scheme
+n_slots: 100000       # hops per trial
+n_channels: 80        # ISM2G4 (configs/elrs_baseline.yaml)
+drones: [2, 3, 4, 5, 6, 7, 8, 9, 10]
+schemes: [stock, random, prp_r4, prp_r8, gap2, gap3]
+field_id: "field-e1"
+stock:
+  # Drones are not time-aligned in stock ELRS: each starts at a random
+  # FHSSptr; hop boundaries are assumed aligned (worst case for collisions).
+  random_phase: true

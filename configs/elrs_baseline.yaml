@@ -1,0 +1,191 @@
+# ExpressLRS baseline parameters (2.4 GHz SX1280, ISM2G4 domain).
+# Every value carries the file + line in ExpressLRS 4.1.0 it was read from.
+elrs_tag: "4.1.0"
+elrs_commit: a9d4a9cb5b5687c4c9d7e9e7fbdf44ad93651da6
+
+fhss:
+  num_channels: {value: 80, source: "src/lib/FHSS/FHSS.cpp L52 (ISM2G4: 2400.4-2479.4 MHz, 80 ch)"}
+  sync_channel: {value: 40, source: "src/lib/FHSS/FHSS.cpp L94 (freq_count / 2)"}
+  sequence_len: {value: 240, source: "src/lib/FHSS/FHSS.cpp L96 ((256 / 80) * 80); FHSS.h L23"}
+  sequence_build: {value: "LCG a=214013 c=2531011 m=2^31, block shuffle", source: "src/lib/FHSS/random.cpp L8-26; FHSS.cpp L134-175"}
+  seed: {value: "UID[2..5] with UID[5]^OTA_VERSION_ID(4)", source: "src/lib/OTA/OTA.cpp L41-45; include/targets.h L8"}
+
+# interval = packet period; hop_interval = packets per hop; tlm = 1 telemetry slot per N
+# airtime_us = TOA column of ExpressLRS_AirRateRFperf; disconnect/lock timeouts and
+# sync intervals from the same row.
+packet_rates:
+  - name: "500Hz"
+    mode: lora
+    rf_index: {value: 4, source: "src/src/common.cpp L86 (index in ExpressLRS_AirRateConfig)"}
+    sf: 5
+    bw_khz: 812.5
+    cr: "LI_4_6"
+    preamble: 12
+    payload_bytes: 8
+    period_us: {value: 2000, source: "src/src/common.cpp L86"}
+    hop_interval: {value: 4, source: "src/src/common.cpp L86"}
+    tlm_ratio: {value: 128, source: "src/src/common.cpp L86 (TLM_RATIO_1_128)"}
+    airtime_us: {value: 1507, source: "src/src/common.cpp L98 (TOA)"}
+    rx_sensitivity_dbm: {value: -105, source: "src/src/common.cpp L98"}
+    disconnect_timeout_ms: {value: 2500, source: "src/src/common.cpp L98 (DisconnectTimeoutMs)"}
+    rx_lock_timeout_ms: {value: 2500, source: "src/src/common.cpp L98 (RxLockTimeoutMs)"}
+    sync_interval_disconnected_ms: {value: 3, source: "src/src/common.cpp L98"}
+    sync_interval_connected_ms: {value: 5000, source: "src/src/common.cpp L98"}
+  - name: "250Hz"
+    mode: lora
+    rf_index: {value: 6, source: "src/src/common.cpp L88 (index in ExpressLRS_AirRateConfig)"}
+    sf: 6
+    bw_khz: 812.5
+    cr: "LI_4_8"
+    preamble: 14
+    payload_bytes: 8
+    period_us: {value: 4000, source: "src/src/common.cpp L88"}
+    hop_interval: {value: 4, source: "src/src/common.cpp L88"}
+    tlm_ratio: {value: 64, source: "src/src/common.cpp L88 (TLM_RATIO_1_64)"}
+    airtime_us: {value: 3300, source: "src/src/common.cpp L100 (TOA)"}
+    rx_sensitivity_dbm: {value: -108, source: "src/src/common.cpp L100"}
+    disconnect_timeout_ms: {value: 3000, source: "src/src/common.cpp L100"}
+    rx_lock_timeout_ms: {value: 2500, source: "src/src/common.cpp L100"}
+    sync_interval_disconnected_ms: {value: 6, source: "src/src/common.cpp L100"}
+    sync_interval_connected_ms: {value: 5000, source: "src/src/common.cpp L100"}
+  - name: "150Hz"
+    mode: lora
+    rf_index: {value: 7, source: "src/src/common.cpp L89 (index in ExpressLRS_AirRateConfig)"}
+    sf: 7
+    bw_khz: 812.5
+    cr: "LI_4_8"
+    preamble: 12
+    payload_bytes: 8
+    period_us: {value: 6666, source: "src/src/common.cpp L89"}
+    hop_interval: {value: 4, source: "src/src/common.cpp L89"}
+    tlm_ratio: {value: 32, source: "src/src/common.cpp L89 (TLM_RATIO_1_32)"}
+    airtime_us: {value: 5871, source: "src/src/common.cpp L101 (TOA)"}
+    rx_sensitivity_dbm: {value: -112, source: "src/src/common.cpp L101"}
+    disconnect_timeout_ms: {value: 3500, source: "src/src/common.cpp L101"}
+    rx_lock_timeout_ms: {value: 2500, source: "src/src/common.cpp L101"}
+    sync_interval_disconnected_ms: {value: 10, source: "src/src/common.cpp L101"}
+    sync_interval_connected_ms: {value: 5000, source: "src/src/common.cpp L101"}
+  - name: "F1000Hz"
+    mode: flrc
+    rf_index: {value: 0, source: "src/src/common.cpp L82 (index in ExpressLRS_AirRateConfig)"}
+    bitrate_kbps: 650
+    cr: "1_2"
+    preamble_bits: 32
+    payload_bytes: 8
+    period_us: {value: 1000, source: "src/src/common.cpp L82"}
+    hop_interval: {value: 2, source: "src/src/common.cpp L82"}
+    tlm_ratio: {value: 128, source: "src/src/common.cpp L82"}
+    airtime_us: {value: 389, source: "src/src/common.cpp L94 (TOA)"}
+    rx_sensitivity_dbm: {value: -104, source: "src/src/common.cpp L94"}
+    disconnect_timeout_ms: {value: 2500, source: "src/src/common.cpp L94"}
+    rx_lock_timeout_ms: {value: 2500, source: "src/src/common.cpp L94"}
+    sync_interval_disconnected_ms: {value: 3, source: "src/src/common.cpp L94"}
+    sync_interval_connected_ms: {value: 5000, source: "src/src/common.cpp L94"}
+  - name: "F500Hz"
+    mode: flrc
+    rf_index: {value: 1, source: "src/src/common.cpp L83 (index in ExpressLRS_AirRateConfig)"}
+    bitrate_kbps: 650
+    cr: "1_2"
+    preamble_bits: 32
+    payload_bytes: 8
+    period_us: {value: 2000, source: "src/src/common.cpp L83"}
+    hop_interval: {value: 2, source: "src/src/common.cpp L83"}
+    tlm_ratio: {value: 128, source: "src/src/common.cpp L83 (TLM_RATIO_1_128)"}
+    airtime_us: {value: 389, source: "src/src/common.cpp L95 (TOA)"}
+    rx_sensitivity_dbm: {value: -104, source: "src/src/common.cpp L95"}
+    disconnect_timeout_ms: {value: 2500, source: "src/src/common.cpp L95"}
+    rx_lock_timeout_ms: {value: 2500, source: "src/src/common.cpp L95"}
+    sync_interval_disconnected_ms: {value: 3, source: "src/src/common.cpp L95"}
+    sync_interval_connected_ms: {value: 5000, source: "src/src/common.cpp L95"}
+  - name: "333HzFull"
+    mode: lora
+    rf_index: {value: 5, source: "src/src/common.cpp L87 (index in ExpressLRS_AirRateConfig)"}
+    sf: 5
+    bw_khz: 812.5
+    cr: "LI_4_8"
+    preamble: 12
+    payload_bytes: 13
+    period_us: {value: 3003, source: "src/src/common.cpp L87"}
+    hop_interval: {value: 4, source: "src/src/common.cpp L87"}
+    tlm_ratio: {value: 128, source: "src/src/common.cpp L87 (TLM_RATIO_1_128)"}
+    airtime_us: {value: 2374, source: "src/src/common.cpp L99 (TOA)"}
+    rx_sensitivity_dbm: {value: -105, source: "src/src/common.cpp L99"}
+    disconnect_timeout_ms: {value: 2500, source: "src/src/common.cpp L99"}
+    rx_lock_timeout_ms: {value: 2500, source: "src/src/common.cpp L99"}
+    sync_interval_disconnected_ms: {value: 4, source: "src/src/common.cpp L99"}
+    sync_interval_connected_ms: {value: 5000, source: "src/src/common.cpp L99"}
+  - name: "100HzFull"
+    mode: lora
+    rf_index: {value: 8, source: "src/src/common.cpp L90 (index in ExpressLRS_AirRateConfig)"}
+    sf: 7
+    bw_khz: 812.5
+    cr: "LI_4_8"
+    preamble: 12
+    payload_bytes: 13
+    period_us: {value: 10000, source: "src/src/common.cpp L90"}
+    hop_interval: {value: 4, source: "src/src/common.cpp L90"}
+    tlm_ratio: {value: 32, source: "src/src/common.cpp L90 (TLM_RATIO_1_32)"}
+    airtime_us: {value: 7605, source: "src/src/common.cpp L102 (TOA)"}
+    rx_sensitivity_dbm: {value: -112, source: "src/src/common.cpp L102"}
+    disconnect_timeout_ms: {value: 3500, source: "src/src/common.cpp L102"}
+    rx_lock_timeout_ms: {value: 2500, source: "src/src/common.cpp L102"}
+    sync_interval_disconnected_ms: {value: 11, source: "src/src/common.cpp L102"}
+    sync_interval_connected_ms: {value: 5000, source: "src/src/common.cpp L102"}
+  - name: "50Hz"
+    mode: lora
+    rf_index: {value: 9, source: "src/src/common.cpp L91 (index in ExpressLRS_AirRateConfig)"}
+    sf: 8
+    bw_khz: 812.5
+    cr: "LI_4_8"
+    preamble: 12
+    payload_bytes: 8
+    period_us: {value: 20000, source: "src/src/common.cpp L91"}
+    hop_interval: {value: 2, source: "src/src/common.cpp L91"}
+    tlm_ratio: {value: 16, source: "src/src/common.cpp L91 (TLM_RATIO_1_16)"}
+    airtime_us: {value: 10798, source: "src/src/common.cpp L103 (TOA)"}
+    rx_sensitivity_dbm: {value: -115, source: "src/src/common.cpp L103"}
+    disconnect_timeout_ms: {value: 4000, source: "src/src/common.cpp L103"}
+    rx_lock_timeout_ms: {value: 2500, source: "src/src/common.cpp L103"}
+    sync_interval_disconnected_ms: {value: 0, source: "src/src/common.cpp L103"}
+    sync_interval_connected_ms: {value: 5000, source: "src/src/common.cpp L103"}
+
+ota4_packet:
+  size_bytes: {value: 8, source: "src/lib/OTA/OTA.h L13 (OTA4_PACKET_SIZE)"}
+  type_bits: {value: 2, source: "src/lib/OTA/OTA.h L59"}
+  crc_bits: {value: 14, source: "src/lib/OTA/OTA.h L59-60 crcHigh:6 + crcLow:8"}
+  rc_channels: {value: "4 x 10-bit + switches:7 + isArmed:1", source: "src/lib/OTA/OTA.h L52-67"}
+  crc_init: {value: "(UID[4] << 8 | UID[5]) ^ (OTA_VERSION_ID << 8), xor nonce", source: "src/lib/OTA/OTA.cpp L28-38, L533"}
+  sync_fields: {value: "fhssIndex, nonce, rfRateEnum, flags, UID4, UID5(^modelId)", source: "src/lib/OTA/OTA.h L28-39"}
+
+link_quality:
+  window_packets: {value: 100, source: "src/src/rx_main.cpp L149 (LQCALC<100>)"}
+  min_lq_formula: {value: "H * ((H*N + 99) // (H*N)); 4 at hop_interval 4, 2 at hop_interval 2; connect needs LQ > this", source: "src/src/rx_main.cpp L225-239 (minLqForChaos)"}
+
+rx_state_machine:
+  disconnect_rule: {value: "connected and now - LastValidPacket > DisconnectTimeoutMs", source: "src/src/rx_main.cpp L2113"}
+  tentative_abort: {value: "tentative and now - LastSyncPacket > RxLockTimeoutMs", source: "src/src/rx_main.cpp L2102"}
+  connect_rule: {value: "tentative and |LPF_OffsetDx| <= 10 and LPF_Offset < 100 and LQ > minLqForChaos", source: "src/src/rx_main.cpp L2118"}
+  pfd_filters: {value: "LPF_Offset beta 2, LPF_OffsetDx beta 4, FP shift 5; tentative phaseShift(RawOffset >> 1)", source: "src/src/rx_main.cpp L145-146, L609-632; include/LowPassFilter.h"}
+  tock_slack: {value: "TOCK = packet end + max(interval - 2*TOA, 200 us); nonce and hop advance at TOCK", source: "src/src/rx_main.cpp L73, L1124-1125, L781"}
+  tock_slack_min_us: {value: 200, source: "src/src/rx_main.cpp L73 (PACKET_TO_TOCK_SLACK)"}
+  rf_cycle: {value: "if !LockRFmode, dwell = 1.1 * N * H * interval per rate; first dwell x5 after boot, x10 after a received packet, then x1", source: "src/src/rx_main.cpp L188, L354, L1191, L1603, L1622-1651"}
+  lock_on_first_connection: {value: true, source: "src/lib/OPTIONS/options.cpp L200; src/user_defines.txt L33"}
+  on_disconnect: {value: "timer stopped, radio parked on sync channel (initial freq)", source: "src/src/rx_main.cpp L798-829"}
+  sync_accept: {value: "sets FHSS index + nonce, -> tentative", source: "src/src/rx_main.cpp L1079-1090"}
+  failsafe: {value: "output failsafe while connectionState == disconnected", source: "src/src/rx-serial/devSerialIO.cpp L73"}
+  telemetry_when_disconnected: {value: false, source: "src/src/rx_main.cpp L456"}
+
+tx_state_machine:
+  sync_rule: {value: "on sync channel, (syncSlot/2) <= nonce % hop_interval, now - last sync > SyncInterval", source: "src/src/tx_main.cpp L539-559"}
+  rx_lost_timeout_ms: {value: "max(512, tlm_ratio * period_us / 200) + 2", source: "src/src/tx_main.cpp L902-906"}
+
+# All SX1280 rates in ExpressLRS_AirRateConfig order, for the RF-mode cycle (interval_us, hop_interval).
+rf_cycle_table:
+  value: [[1000, 2], [2000, 2], [1000, 2], [1000, 2], [2000, 4], [3003, 4], [4000, 4], [6666, 4], [10000, 4], [20000, 2]]
+  source: "src/src/common.cpp L82-91"
+
+# Values below are NOT from ExpressLRS; assumptions to be calibrated on hardware.
+assumptions:
+  fixed_overhead_us: {value: 100, source: "ASSUMPTION: ISR latency + TX/RX turnaround + PLL settle (SX1280 DS, to be measured)"}
+  isr_jitter_us: {value: 15, source: "ASSUMPTION: std dev of ISR/timer jitter (logic-analyser to be measured)"}
+  pfd_initial_offset_us: {value: 50, source: "ASSUMPTION: std dev of PFD raw offset when entering tentative; to be measured on RP1"}

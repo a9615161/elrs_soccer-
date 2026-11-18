@@ -1,0 +1,11 @@
+name: e1_saturation
+seed: 20261028
+trials: 10
+n_slots: 20000
+# Channel counts of real ELRS domains (FHSS.cpp): EU868=13, AU915=20, FCC915=40, ISM2G4=80
+cases: [13, 20, 40, 80]
+load: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]   # M/N; 1.0 = every channel in use
+schemes: [stock, random, prp_r4, prp_r8, gap2, gap3]
+field_id: "field-e1"
+stock:
+  random_phase: true
