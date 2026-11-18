@@ -1,0 +1,14 @@
+# N3 (= F5): recovery vs blackout length, new mechanism vs stock / stock-sync.
+# Proposed uses the critical-channel resync (crit_channel set); stock ignores it.
+name: n3_blackout
+seeds: 150
+duration_s: 30
+protocols: [stock, stocksync, proposed]
+fixed:
+  window: 8
+  crit_channel: 49     # new mechanism for proposed; ignored by stock/stocksync
+  n_sync: 1
+sweep:
+  rate: ["F1000Hz", "500Hz", "250Hz", "150Hz"]   # plan N3.3 rate set
+  drift_ppm: [0, 50]
+  blackout: {start_s: [5], dur_s: [0.05, 0.1, 0.25, 0.5, 1, 2, 2.4, 2.6, 3, 5, 10]}

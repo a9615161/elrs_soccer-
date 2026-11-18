@@ -1,0 +1,13 @@
+# N3: TX reboot -- RX should COAST through and reconnect fast once TX returns.
+name: n3_txreboot
+seeds: 150
+duration_s: 30
+protocols: [stock, stocksync, proposed]
+fixed:
+  window: 8
+  drift_ppm: 50
+  crit_channel: 49
+sweep:
+  rate: ["F1000Hz", "500Hz", "250Hz", "150Hz"]
+  n_sync: [1, 2, 4]
+  tx_reboot: {start_s: [5], dur_s: [0.5, 2.0]}

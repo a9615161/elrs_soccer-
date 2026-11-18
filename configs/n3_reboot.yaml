@@ -1,0 +1,13 @@
+# N3: RX reboot recovery, sweeping TX-sync-per-frame n_s (1/2/4) -- the FC2 cost/recovery tradeoff.
+name: n3_reboot
+seeds: 150
+duration_s: 30
+protocols: [stock, stocksync, proposed]
+fixed:
+  window: 8
+  drift_ppm: 50
+  crit_channel: 49
+sweep:
+  rate: ["F1000Hz", "500Hz", "250Hz", "150Hz", "50Hz"]
+  n_sync: [1, 2, 4]           # proposed only varies with this; stock/stocksync duplicate (filtered in analysis)
+  reboot: {start_s: [5], dur_s: [0.5]}

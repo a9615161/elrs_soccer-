@@ -1,0 +1,27 @@
+name: n3_reboot
+seeds: 150
+duration_s: 30
+protocols:
+- stock
+- stocksync
+- proposed
+fixed:
+  window: 8
+  drift_ppm: 50
+  crit_channel: 49
+sweep:
+  rate:
+  - F1000Hz
+  - 500Hz
+  - 250Hz
+  - 150Hz
+  - 50Hz
+  n_sync:
+  - 1
+  - 2
+  - 4
+  reboot:
+    start_s:
+    - 5
+    dur_s:
+    - 0.5
