@@ -1,0 +1,6 @@
+scheme,cochannel_pct,hop_set,provision_bytes,needs_gs,flash_leak
+c0_stock,12.014,80,0,False,n/a
+c0_random,10.7,80,0,False,n/a
+c1_static,0.0,8,8,False,own subset only
+c2_proposed,0.0,79,26250,True,own column only
+c3_onboard,0.0,79,16,True,whole field (K_hop)

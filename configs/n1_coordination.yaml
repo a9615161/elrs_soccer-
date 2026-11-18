@@ -1,0 +1,12 @@
+# N1: coordination cost vs friendly collision (revised plan 三 N1 詳細設計).
+name: n1_coordination
+rate: "500Hz"            # LoRa 500 Hz, P = 2 ms (plan baseline)
+seed: 20261118
+n_slots: 30000          # base slots per trial (collision estimate)
+n_slots_max: 200000     # cap when K is large (need n >~ a few beacon intervals)
+trials: 40
+drones: [2, 3, 4, 5, 6, 7, 8, 9, 10]
+eps_ppm: [2, 10, 50]    # residual TX freq offset after beacon calibration (from N2)
+beacon_K: [256, 1024, 4096, 16384, 65536, 0]  # 256x{1,4,16,64,256}; 0 = align once at start
+cost_M: 10
+c3_prf_per_hop: 2.89    # measured PRF calls/slot for on-board PRP (C test, N=80 M=10 gap=2)

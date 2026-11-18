@@ -1,0 +1,29 @@
+name: n1_coordination
+rate: 500Hz
+seed: 20261118
+n_slots: 30000
+n_slots_max: 200000
+trials: 40
+drones:
+- 2
+- 3
+- 4
+- 5
+- 6
+- 7
+- 8
+- 9
+- 10
+eps_ppm:
+- 2
+- 10
+- 50
+beacon_K:
+- 256
+- 1024
+- 4096
+- 16384
+- 65536
+- 0
+cost_M: 10
+c3_prf_per_hop: 2.89
