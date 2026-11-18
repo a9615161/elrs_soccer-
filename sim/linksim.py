@@ -141,7 +141,8 @@ def run(sc: Scenario) -> Result:
         out = _run_proposed_critical(sc, r, n, ch, ok, tlm, extra, rng, lost_any, jam, reboot)
     else:
         out = _run_proposed(sc, r, n, ch, ok, tlm, extra, rng, lost_any, jam, reboot)
-    end = (blackout or reboot or (None, None))[1]
+    tx_reboot = _window_slots(sc.tx_reboot, period, n)
+    end = (blackout or reboot or tx_reboot or (None, None))[1]
     return _finish(sc, r, n, ok, tlm, end, *out)
 
 
@@ -455,8 +456,10 @@ def _run_proposed_critical(sc, r, n, ch, ok, tlm, extra, rng, lost_any, jam, reb
                     accepted = True
                     delivered[t] = True
                     err_us, last_lock, last_acc, need_window = 0.0, t, k1 + off, False
-        if not accepted and not parked and (t - last_lock) > coast_slots:
-            parked = True                          # COAST budget exhausted: clock no longer trusted
+        if not accepted:
+            need_window = True                     # after a gap, re-acquire the counter with window W
+            if not parked and (t - last_lock) > coast_slots:
+                parked = True                      # COAST budget exhausted: clock no longer trusted
         rx_state[t] = proto_ffi.LOST if parked else proto_ffi.LOCKED
         parked_tr[t] = parked
     sent = ~tlm & ~is_beacon
