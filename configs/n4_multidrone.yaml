@@ -1,0 +1,12 @@
+# N4 (= F7 no-jammer): M links in one field, full new-mechanism stack, N=79.
+name: n4_multidrone
+seed: 20261118
+duration_s: 30
+window: 8
+p_adj: 0.5              # adjacent-channel drop prob (assumption, plan)
+rates: ["500Hz"]
+drones: [1, 2, 5, 10]
+leakage: [false, true]
+offset_fracs: [0.1, 0.2, 0.3, 0.5, 0.75, 1.0]
+offset_drones: 10
+trials: 40
